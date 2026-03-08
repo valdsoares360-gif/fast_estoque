@@ -43,6 +43,7 @@ def criar_movimentacao(
     db.add(nova_movimentacao)
 
     db.commit()
+    db.refresh(produto)
     if produto.quantidade <= produto.estoque_minimo:
        enviar_alerta(produto)
 
