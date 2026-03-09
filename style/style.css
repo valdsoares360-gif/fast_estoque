@@ -1,0 +1,92 @@
+/* ---------- FUNDO PRINCIPAL ---------- */
+
+[data-testid="stAppViewContainer"]{
+    background-color: #0E1117;
+    color: white;
+}
+
+/* ---------- SIDEBAR ---------- */
+
+[data-testid="stSidebar"]{
+    background-color: #111418;
+}
+
+[data-testid="stSidebar"] *{
+    color: white;
+}
+
+/* ---------- TITULOS ---------- */
+
+h1, h2, h3, h4 {
+    color: white;
+    font-weight: 600;
+}
+
+/* ---------- CARDS DE MÉTRICAS ---------- */
+
+.metric-card{
+    background: #1c1f26;
+    padding: 25px;
+    border-radius: 14px;
+    border: 1px solid #2a2d34;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.4);
+}
+
+.metric-title{
+    font-size: 14px;
+    color: #9aa0a6;
+}
+
+.metric-value{
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* ---------- INPUTS ---------- */
+
+input, textarea{
+    background-color:#1c1f26 !important;
+    color:white !important;
+    border-radius:8px !important;
+}
+
+/* ---------- BOTÕES ---------- */
+
+button[kind="primary"]{
+    background-color:#4f8bf9 !important;
+    border-radius:10px;
+    border:none;
+}
+
+button[kind="primary"]:hover{
+    background-color:#3b6ed6 !important;
+}
+
+/* ---------- TABELAS ---------- */
+
+[data-testid="stDataFrame"]{
+    background-color:#1c1f26;
+    border-radius:12px;
+}
+
+/* ---------- ALERTA ---------- */
+
+.stAlert{
+    border-radius:10px;
+}
+
+/* ---------- SCROLLBAR ---------- */
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-track{
+    background:#0E1117;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#2a2d34;
+    border-radius:10px;
+}

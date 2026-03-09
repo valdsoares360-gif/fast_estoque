@@ -11,39 +11,52 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------- ESTILO CSS ----------
+# ---------- CARREGAR CSS ----------
 
-st.markdown("""
-<style>
+def carregar_css():
+    try:
+        with open("style/style.css") as f:
+            st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+    except:
+        pass
 
-[data-testid="stAppViewContainer"]{
-    background-color:#0E1117;
-}
-
-[data-testid="stSidebar"]{
-    background-color:#1c1f26;
-}
-
-.metric-card{
-    background:#1c1f26;
-    padding:25px;
-    border-radius:12px;
-    border:1px solid #2a2d34;
-}
-
-</style>
-""", unsafe_allow_html=True)
+carregar_css()
 
 st.title("📦 Sistema de Controle de Estoque")
 
-# ---------- LOGIN ----------
+# ---------- AUTENTICAÇÃO ----------
 
 if "token" not in st.session_state:
     st.session_state.token = None
 
-if st.session_state.token is None:
+if "pagina_auth" not in st.session_state:
+    st.session_state.pagina_auth = "inicio"
 
-    st.subheader("🔐 Login")
+# ---------- TELA INICIAL ----------
+
+if st.session_state.token is None and st.session_state.pagina_auth == "inicio":
+
+    st.subheader("Bem-vindo ao Sistema")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button("🔐 Entrar"):
+            st.session_state.pagina_auth = "login"
+            st.rerun()
+
+    with col2:
+        if st.button("📝 Criar conta"):
+            st.session_state.pagina_auth = "cadastro"
+            st.rerun()
+
+    st.stop()
+
+# ---------- LOGIN ----------
+
+if st.session_state.token is None and st.session_state.pagina_auth == "login":
+
+    st.subheader("Login")
 
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
@@ -59,14 +72,82 @@ if st.session_state.token is None:
         )
 
         if r.status_code == 200:
+
             token = r.json()["access_token"]
+
             st.session_state.token = token
+
             st.success("Login realizado!")
+
             st.rerun()
+
         else:
+
             st.error("Usuário ou senha inválidos")
 
+    if st.button("⬅ Voltar"):
+        st.session_state.pagina_auth = "inicio"
+        st.rerun()
+
     st.stop()
+
+# ---------- CADASTRO ----------
+
+if st.session_state.token is None and st.session_state.pagina_auth == "cadastro":
+
+    st.subheader("Criar Conta")
+
+    new_user = st.text_input("Novo usuário")
+
+    new_pass = st.text_input(
+        "Senha",
+        type="password"
+    )
+
+    if st.button("Cadastrar"):
+
+        r = requests.post(
+            f"{API_URL}/auth/register",
+            json={
+                "username": new_user,
+                "password": new_pass
+            }
+        )
+
+        if r.status_code in [200, 201]:
+
+            st.success("Conta criada! Faça login.")
+
+            st.session_state.pagina_auth = "login"
+
+            st.rerun()
+
+        else:
+
+            st.error(r.text)
+
+    if st.button("⬅ Voltar"):
+        st.session_state.pagina_auth = "inicio"
+        st.rerun()
+
+    st.stop()
+
+# ---------- SIDEBAR ----------
+
+menu = st.sidebar.selectbox(
+    "Menu",
+    ["Dashboard", "Produtos", "Adicionar Produto", "Movimentações"]
+)
+
+st.sidebar.divider()
+
+if st.sidebar.button("🚪 Logout"):
+
+    st.session_state.token = None
+
+    st.session_state.pagina_auth = "inicio"
+
+    st.rerun()
 
 # ---------- FUNÇÃO API ----------
 
@@ -89,13 +170,6 @@ def carregar_produtos():
 
     return pd.DataFrame(data)
 
-# ---------- MENU ----------
-
-menu = st.sidebar.selectbox(
-    "Menu",
-    ["Dashboard", "Produtos", "Adicionar Produto"]
-)
-
 # ---------- DASHBOARD ----------
 
 if menu == "Dashboard":
@@ -110,28 +184,19 @@ if menu == "Dashboard":
 
     col1, col2, col3 = st.columns(3)
 
-    col1.markdown(f"""
-    <div class="metric-card">
-    <div class="metric-title">Produtos</div>
-    <div class="metric-value">{len(df)}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    col1.metric("Produtos", len(df))
 
-    col2.markdown(f"""
-    <div class="metric-card">
-    <div class="metric-title">Estoque total</div>
-    <div class="metric-value">{int(df["quantidade"].sum())}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    col2.metric(
+        "Estoque Total",
+        int(df["quantidade"].sum())
+    )
 
     valor = (df["preco"] * df["quantidade"]).sum()
 
-    col3.markdown(f"""
-    <div class="metric-card">
-    <div class="metric-title">Valor em estoque</div>
-    <div class="metric-value">R$ {valor:.2f}</div>
-    </div>
-    """, unsafe_allow_html=True)
+    col3.metric(
+        "Valor em Estoque",
+        f"R$ {valor:.2f}"
+    )
 
     st.divider()
 
@@ -165,8 +230,6 @@ if menu == "Dashboard":
 
         st.plotly_chart(fig2, use_container_width=True)
 
-    # ALERTA DE ESTOQUE
-
     st.divider()
 
     st.subheader("⚠️ Produtos com estoque baixo")
@@ -174,9 +237,12 @@ if menu == "Dashboard":
     baixo = df[df["quantidade"] <= df["estoque_minimo"]]
 
     if baixo.empty:
+
         st.success("Nenhum produto com estoque baixo")
+
     else:
-        st.dataframe(baixo)
+
+        st.dataframe(baixo, use_container_width=True)
 
 # ---------- PRODUTOS ----------
 
@@ -209,8 +275,6 @@ elif menu == "Produtos":
     st.dataframe(df, use_container_width=True)
 
     st.divider()
-
-    # EDITAR
 
     st.subheader("✏️ Editar Produto")
 
@@ -262,14 +326,16 @@ elif menu == "Produtos":
             )
 
             if r.status_code in [200, 204]:
+
                 st.success("Produto atualizado!")
+
                 st.rerun()
+
             else:
+
                 st.error(r.text)
 
     st.divider()
-
-    # DELETAR
 
     st.subheader("❌ Deletar Produto")
 
@@ -289,12 +355,16 @@ elif menu == "Produtos":
             )
 
             if r.status_code in [200, 204]:
+
                 st.success("Produto deletado!")
+
                 st.rerun()
+
             else:
+
                 st.error(r.text)
 
-# ---------- CADASTRAR ----------
+# ---------- CADASTRAR PRODUTO ----------
 
 elif menu == "Adicionar Produto":
 
@@ -347,7 +417,67 @@ elif menu == "Adicionar Produto":
         )
 
         if r.status_code in [200, 201]:
-            st.success("✅ Produto cadastrado com sucesso!")
+
+            st.success("Produto cadastrado!")
+
             st.rerun()
+
         else:
-            st.error(f"Erro ao cadastrar produto: {r.text}")
+
+            st.error(f"Erro: {r.text}")
+
+
+# ---------- MOVIMENTAÇOES ----------
+
+
+elif menu == "Movimentações":
+
+    st.subheader("🔄 Movimentar Estoque")
+
+    df = carregar_produtos()
+
+    if df.empty:
+        st.warning("Nenhum produto cadastrado")
+        st.stop()
+
+    produto_nome = st.selectbox(
+        "Produto",
+        df["nome"]
+    )
+
+    produto_id = df[df["nome"] == produto_nome]["id"].values[0]
+
+    tipo = st.selectbox(
+        "Tipo de movimentação",
+        ["entrada", "saida"]
+    )
+
+    quantidade = st.number_input(
+        "Quantidade",
+        min_value=1,
+        step=1
+    )
+
+    if st.button("Registrar movimentação"):
+
+        headers = {
+            "Authorization": f"Bearer {st.session_state.token}"
+        }
+
+        r = requests.post(
+            f"{API_URL}/movimentacoes",
+            json={
+                "produto_id": int(produto_id),
+                "tipo": tipo,
+                "quantidade": int(quantidade)
+            },
+            headers=headers
+        )
+
+        if r.status_code in [200, 201]:
+
+            st.success("Movimentação registrada com sucesso!")
+
+        else:
+
+            st.error(f"Erro: {r.text}")
