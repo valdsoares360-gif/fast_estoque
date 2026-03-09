@@ -61,3 +61,28 @@ def deletar_produto(
     db.commit()
 
     return {"mensagem": "Produto deletado"}
+
+
+@router.put("/{produto_id}")
+def atualizar_produto(
+    produto_id: int,
+    produto: ProdutoCreate,
+    db: Session = Depends(get_db),
+    usuario = Depends(get_usuario_atual)
+):
+
+    produto_db = db.query(Produto).filter(Produto.id == produto_id).first()
+
+    if not produto_db:
+        raise HTTPException(status_code=404, detail="Produto não encontrado")
+
+    produto_db.nome = produto.nome
+    produto_db.descricao = produto.descricao
+    produto_db.quantidade = produto.quantidade
+    produto_db.preco = produto.preco
+    produto_db.estoque_minimo = produto.estoque_minimo
+
+    db.commit()
+    db.refresh(produto_db)
+
+    return produto_db
