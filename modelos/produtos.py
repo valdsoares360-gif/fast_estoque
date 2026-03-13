@@ -1,13 +1,22 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float,ForeignKey 
 from banco.db import Base
-
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Produto(Base):
+
     __tablename__ = "produtos"
 
     id = Column(Integer, primary_key=True, index=True)
-    nome = Column(String, nullable=False)
+
+    nome = Column(String)
+
     descricao = Column(String)
-    preco = Column(Float, nullable=False)
-    quantidade = Column(Integer, default=0)
-    estoque_minimo = Column(Integer, default=0)
+
+    quantidade = Column(Integer)
+
+    preco = Column(Float)
+
+    estoque_minimo = Column(Integer)
+
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"))

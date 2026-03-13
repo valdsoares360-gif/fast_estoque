@@ -14,4 +14,6 @@ class Movimentacao(Base):
 
     quantidade = Column(Integer, nullable=False)
 
+    usuario_id = Column(Integer, ForeignKey("usuarios.id"))
+
     data = Column(DateTime(timezone=True), server_default=func.now())
