@@ -5,10 +5,8 @@ from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 from banco.db import get_db
 from modelos.usuarios import Usuario
+from nucleo.config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
 
-SECRET_KEY = "segredo_super_seguro"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="auth/login")
 
