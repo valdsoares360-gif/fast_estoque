@@ -24,13 +24,15 @@ def carregar_css():
 carregar_css()
 
 # HEADER
-col_logo, col_title = st.columns([1,5])
+if "menu" not in st.session_state or st.session_state.get("menu") != "VsBot":
 
-with col_logo:
-    st.image("imagens/Vsoares.png", width=800)
+    col_logo, col_title = st.columns([1,5])
 
-with col_title:
-    st.title("Sistema de Controle de Estoque")
+    with col_logo:
+        st.image("imagens/vsoares.png", width=800)
+
+    with col_title:
+        st.title("Sistema de Controle de Estoque")
 
 # =============================
 # AUTENTICAÇÃO
@@ -225,10 +227,12 @@ menu = st.sidebar.radio(
         "Produtos",
         "Adicionar Produto",
         "Movimentações",
-        "Histórico de Movimentações"
+        "Histórico de Movimentações",
+        "VsBot"
     ]
 )
 
+st.session_state.menu = menu
 # =============================
 # HISTÓRICO
 # =============================
@@ -655,4 +659,128 @@ elif menu == "Histórico de Movimentações":
         use_container_width=True
     )
 
+
+# =============================
+# VSBOT
+# =============================
+
+elif menu == "VsBot":
+
+    st.markdown("""
+    <style>
+
+    /* fundo geral */
+    [data-testid="stAppViewContainer"]{
+        background-color:#0e1117;
+    }
+
+    /* centralizar chat */
+    .chat-container{
+        max-width:900px;
+        margin:auto;
+    }
+
+    /* bolha usuário */
+    .user-bubble{
+        background:#2563eb;
+        padding:12px 16px;
+        border-radius:12px;
+        color:white;
+        margin-bottom:10px;
+        text-align:right;
+    }
+
+    /* bolha bot */
+    .bot-bubble{
+        background:#1f2937;
+        padding:12px 16px;
+        border-radius:12px;
+        color:white;
+        margin-bottom:10px;
+        text-align:left;
+    }
+
+    /* titulo */
+    .vsbot-title{
+        text-align:center;
+        font-size:32px;
+        font-weight:700;
+        margin-bottom:30px;
+        color:white;
+    }
+
+    </style>
+    """, unsafe_allow_html=True)
+
+
+    st.markdown(
+        "<div class='vsbot-title'>🤖 VsBot - Assistente do Estoque</div>",
+        unsafe_allow_html=True
+    )
+
+    st.markdown("<div class='chat-container'>", unsafe_allow_html=True)
+
+
+    if "chat_vsbot" not in st.session_state:
+        st.session_state.chat_vsbot = []
+
+
+    # mostrar histórico
+    for role, msg in st.session_state.chat_vsbot:
+
+        if role == "user":
+
+            st.markdown(
+                f"<div class='user-bubble'>🤵 {msg}</div>",
+                unsafe_allow_html=True
+            )
+
+        else:
+
+            st.markdown(
+                f"<div class='bot-bubble'>🤖 {msg}</div>",
+                unsafe_allow_html=True
+            )
+
+
+    pergunta = st.chat_input("Pergunte algo sobre o estoque...")
+
+
+    if pergunta:
+
+        st.session_state.chat_vsbot.append(("user", pergunta))
+
+
+        with st.spinner("VsBot está pensando..."):
+
+            r = requests.post(
+                "http://localhost:5678/webhook-test/vsbot",
+                json={
+                    "pergunta": pergunta,
+                    "token": st.session_state.token
+                
+               }
+            )
+
+
+            if r.status_code == 200:
+
+                data = r.json()
+
+                if isinstance(data, list):
+                    data = data[0]
+
+                resposta = data.get("resposta") or data.get("output") or "Sem resposta"
+
+            else:
+
+                resposta = "Erro ao consultar VsBot"
+
+
+        st.session_state.chat_vsbot.append(("bot", resposta))
+
+        st.rerun()
+
+
+    st.markdown("</div>", unsafe_allow_html=True)
 
