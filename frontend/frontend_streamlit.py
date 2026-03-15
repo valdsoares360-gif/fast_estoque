@@ -5,8 +5,14 @@ import pandas as pd
 import plotly.express as px
 import io 
 from datetime import datetime
+import sys
+import os
 
-API_URL = "http://127.0.0.1:8000"
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+
+API_URL = "http://backend:8000"
 
 st.set_page_config(
     page_title="Controle de Estoque",
@@ -18,8 +24,8 @@ def carregar_css():
     try:
         with open("style/style.css") as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
-    except:
-        pass
+    except Exception as e:
+        st.error(f"Erro ao carregar CSS: {e}")
 
 carregar_css()
 
@@ -336,7 +342,8 @@ if menu == "Dashboard":
        st.success("Nenhum produto com estoque baixo")
 
     else:
-
+       
+       
        def cor_linha(row):
 
           if row["quantidade"] < row["estoque_minimo"]:
@@ -754,7 +761,7 @@ elif menu == "VsBot":
         with st.spinner("VsBot está pensando..."):
 
             r = requests.post(
-                "http://localhost:5678/webhook-test/vsbot",
+                "http://n8n:5678/webhook/vsbot",
                 json={
                     "pergunta": pergunta,
                     "token": st.session_state.token
@@ -783,4 +790,10 @@ elif menu == "VsBot":
 
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+
+
+
+
+
 

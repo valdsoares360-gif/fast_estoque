@@ -1,11 +1,9 @@
 import requests
 
-
-
-WEBHOOK_N8N = "http://localhost:5678/webhook-test/estoque-baixo"
+WEBHOOK_N8N = "http://n8n:5678/webhook/estoque-baixo"
 
 def enviar_alerta(produto, usuario):
-    
+
     dados = {
         "email": usuario.email,
         "nome": produto.nome,

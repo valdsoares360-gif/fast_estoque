@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
 
   postgres:
@@ -12,6 +10,35 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    container_name: estoque_backend
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  frontend:
+    build: ./frontend
+    container_name: estoque_frontend
+    restart: always
+    ports:
+      - "8501:8501"
+    depends_on:
+      - backend
+
+  n8n:
+    image: n8nio/n8n
+    container_name: estoque_n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    volumes:
+      - C:/Users/valdinei santos/.n8n:/home/node/.n8n
 
 volumes:
   postgres_data:
