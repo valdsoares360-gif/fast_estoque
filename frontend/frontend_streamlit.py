@@ -9,11 +9,14 @@ import sys
 import os
 
 
+# Garante que o diretório pai esteja no path (para imports de módulos)
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+# Caminho base do script (para CSS e imagens)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 API_URL = "https://estoque-backend-pyq6.onrender.com/"
-    
+
 st.set_page_config(
     page_title="Controle de Estoque",
     layout="wide"
@@ -22,7 +25,8 @@ st.set_page_config(
 # CSS
 def carregar_css():
     try:
-        with open("style/style.css") as f:
+        css_path = os.path.join(BASE_DIR, "style", "style.css")
+        with open(css_path) as f:
             st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
     except Exception as e:
         st.error(f"Erro ao carregar CSS: {e}")
@@ -35,7 +39,7 @@ if "menu" not in st.session_state or st.session_state.get("menu") != "VsBot":
     col_logo, col_title = st.columns([1,5])
 
     with col_logo:
-        st.image("imagens/vsoares.png", width=800)
+        img_path = os.path.join(BASE_DIR, "imagens", "vsoares.png")
 
     with col_title:
         st.title("Sistema de Controle de Estoque")
