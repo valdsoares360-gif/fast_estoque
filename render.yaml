@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: backend
+    runtime: docker
+    repo: https://github.com/valdsoares360-gif/fast_estoque
+    branch: main
+    dockerfilePath: backend/Dockerfile
+    plan: free
+    autoDeploy: true
+
+  - type: web
+    name: frontend
+    runtime: docker
+    repo: https://github.com/valdsoares360-gif/fast_estoque
+    branch: main
+    dockerfilePath: frontend/Dockerfile
+    plan: free
+    autoDeploy: true
+
+  - type: web
+    name: n8n
+    runtime: docker
+    repo: https://github.com/valdsoares360-gif/fast_estoque
+    branch: main
+    dockerfilePath: n8n/Dockerfile
+    plan: free
+    autoDeploy: true
