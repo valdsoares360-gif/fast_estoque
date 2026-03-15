@@ -12,8 +12,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
-API_URL = "http://backend:8000"
-
+API_URL = "https://estoque-backend-pyq6.onrender.com/"
+    
 st.set_page_config(
     page_title="Controle de Estoque",
     layout="wide"
