@@ -28,7 +28,8 @@ services:
     name: estoque-n8n
     env: docker
     plan: free
-    image: n8nio/n8n
+    image:
+      url: n8nio/n8n
     autoDeploy: true
     envVars:
       - key: N8N_PORT
