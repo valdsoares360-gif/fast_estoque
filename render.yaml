@@ -3,7 +3,7 @@ services:
     name: estoque-backend
     env: docker
     plan: free
-    dockerfilePath: ./dockerfile
+    dockerfilePath: ./Dockerfile
     autoDeploy: true
     envVars:
       - key: DATABASE_URL
@@ -25,7 +25,7 @@ services:
     autoDeploy: true
 
   - type: web
-    name: estoque-n8n
+    name: n8n-stoque
     env: docker
     plan: free
     image:
@@ -34,9 +34,16 @@ services:
     envVars:
       - key: N8N_PORT
         value: 5678
+    mounts:
+      - type: volume
+        source: n8n_data
+        target: /home/node/.n8n
 
 databases:
   - name: estoque-db
     databaseName: controle_estoque
     user: estoque_user
     plan: free
+
+volumes:
+  - name: n8n_data
