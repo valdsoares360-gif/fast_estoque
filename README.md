@@ -1,3 +1,12 @@
+VSestoque
+![Python](https://img.shields.io/badge/Python-3.11-blue)
+![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue)
+![Docker](https://img.shields.io/badge/Docker-Containerization-2496ED)
+![n8n](https://img.shields.io/badge/n8n-Automation-orange)
+![Render](https://img.shields.io/badge/Deploy-Render-purple)
+
 # 🎥 Demonstração
 
 ### 🔐 Login e cadastro
