@@ -765,7 +765,7 @@ elif menu == "VsBot":
         with st.spinner("VsBot está pensando..."):
 
             r = requests.post(
-                "https://n8n-stoque.onrender.com//webhook/vsbot",
+                "https://n8n-ldgy.onrender.com/webhook/vsbot",
                 json={
                     "pergunta": pergunta,
                     "token": st.session_state.token
