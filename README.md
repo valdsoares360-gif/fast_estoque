@@ -1,4 +1,4 @@
-📦 VSestoque
+# 📦 VSestoque
 
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-API-green)
@@ -8,46 +8,39 @@
 ![n8n](https://img.shields.io/badge/n8n-Automation-orange)
 ![Render](https://img.shields.io/badge/Deploy-Render-purple)
 
+Complete inventory management system with user authentication, interactive dashboard, and chatbot automation.
 
-
-
-
-
-
-
-
-Sistema completo de gerenciamento de estoque com autenticação de usuários, dashboard interativo e automação com chatbot.
-
-O projeto demonstra a construção de uma aplicação moderna utilizando:
+The project demonstrates the development of a modern application using:
 
 API REST
 
-frontend desacoplado
+Decoupled frontend
 
-automação de processos
+Process automation
 
-deploy em nuvem
+Cloud deployment
 
+---
 
-🌐 Acesse a aplicação
-Frontend
+# 🌐 Access the Application
+
+### Frontend
 
 https://estoque-frontend-yi4t.onrender.com
 
-Backend
+### Backend
 
 https://estoque-backend-pyq6.onrender.com
 
-Automação (n8n)
+### Automation (n8n)
 
 https://n8n-ldgy.onrender.com
 
+---
 
+# 🎥 Demo
 
-
-# 🎥 Demonstração
-
-### 🔐 Login e cadastro
+### 🔐 Login and Registration
 
 ![Login](docs/gifs/tela_login.gif)
 
@@ -59,27 +52,27 @@ https://n8n-ldgy.onrender.com
 
 ---
 
-### 📦 Gerenciamento de produtos
+### 📦 Product Management
 
-![Produtos](docs/gifs/tela_produtos.gif)
-
----
-
-### ➕ Adicionar produto
-
-![Adicionar Produto](docs/gifs/tela_add.gif)
+![Products](docs/gifs/tela_produtos.gif)
 
 ---
 
-### 🔄 Movimentações de estoque
+### ➕ Add Product
 
-![Movimentações](docs/gifs/tela_mov.gif)
+![Add Product](docs/gifs/tela_add.gif)
 
 ---
 
-### 📜 Histórico de movimentações
+### 🔄 Stock Movements
 
-![Histórico](docs/gifs/tela_history.gif)
+![Movements](docs/gifs/tela_mov.gif)
+
+---
+
+### 📜 Movement History
+
+![History](docs/gifs/tela_history.gif)
 
 ---
 
@@ -87,36 +80,37 @@ https://n8n-ldgy.onrender.com
 
 ![VsBot](docs/gifs/tela_vsbot.gif)
 
+---
 
+# ✔️ Features
 
+User registration
 
-✔️ Funcionalidades
+Login with JWT authentication
 
-Cadastro de usuários
+Complete product management
 
-Login com autenticação JWT
+Stock input and output
 
-Gerenciamento completo de produtos
+Movement history
 
-Entrada e saída de estoque
+Dashboard with interactive charts
 
-Histórico de movimentações
+Chatbot integration
 
-Dashboard com gráficos interativos
+Automation using n8n
 
-Integração com chatbot
+REST API with FastAPI
 
-Automação utilizando n8n
+Modern interface with Streamlit
 
-API REST com FastAPI
+Automatic low stock notification
 
-Interface moderna com Streamlit
+---
 
-Notificaçao automatica de estoque baixo
+# 🛠️ Technologies Used
 
-
-🛠️ Tecnologias Utilizadas
-Backend
+## Backend
 
 Python
 
@@ -126,106 +120,153 @@ SQLAlchemy
 
 JWT Authentication
 
-Frontend
+## Frontend
 
 Streamlit
 
 Plotly
 
-Banco de Dados
+## Database
 
 PostgreSQL
 
-Automação
+## Automation
 
 n8n
 
-Infraestrutura
+## Infrastructure
 
 Docker
 
 Render
 
+---
 
-🏗️ Arquitetura do Sistema
+# 🏗️ System Architecture
 
-Arquitetura modular baseada em serviços desacoplados.
+Modular architecture based on decoupled services.
 
-Usuário
+```
+User
    ↓
 Frontend (Streamlit)
    ↓
 Backend API (FastAPI)
    ↓
-Banco de Dados (PostgreSQL)
+Database (PostgreSQL)
    ↓
-Automação (n8n)
+Automation (n8n)
    ↓
 Chatbot (VsBot)
+```
 
-💻 Como Rodar o Projeto Localmente
-1️⃣ Clonar o repositório
+---
+
+# 💻 How to Run the Project Locally
+
+## 1️⃣ Clone the repository
+
+```
 git clone https://github.com/valdsoares360-gif/controle-estoque.git
-2️⃣ Entrar na pasta do projeto
+```
+
+## 2️⃣ Enter the project folder
+
+```
 cd controle-estoque
-3️⃣ Criar ambiente virtual
+```
+
+## 3️⃣ Create virtual environment
+
+```
 python -m venv venv
-4️⃣ Ativar ambiente virtual
+```
+
+## 4️⃣ Activate virtual environment
+
 Windows
+
+```
 venv\Scripts\activate
-5️⃣ Instalar dependências
+```
+
+## 5️⃣ Install dependencies
+
+```
 pip install -r requirements.txt
-6️⃣ Rodar Backend
+```
+
+## 6️⃣ Run Backend
+
+```
 uvicorn app.main:app --reload
+```
 
-Backend disponível em:
+Backend available at:
 
+```
 http://localhost:8000
-7️⃣ Rodar Frontend
+```
+
+## 7️⃣ Run Frontend
+
+```
 streamlit run frontend/app.py
+```
 
-Frontend disponível em:
+Frontend available at:
 
+```
 http://localhost:8501
-🤖 Integração com n8n
+```
 
-O projeto utiliza n8n para automação de processos e integração com o chatbot.
+---
 
-Fluxo de funcionamento:
+# 🤖 n8n Integration
 
-Aplicação → Webhook → n8n → Automação → Resposta ao usuário
+The project uses n8n for process automation and chatbot integration.
 
-Isso permite criar integrações e automações baseadas em eventos do sistema.
+Workflow:
 
-📚 Aprendizados
+Application → Webhook → n8n → Automation → Response to the user
 
-Durante o desenvolvimento deste projeto foram aplicados conceitos importantes como:
+This allows creating integrations and automations based on system events.
 
-desenvolvimento de APIs REST
+---
 
-autenticação com JWT
+# 📚 Learnings
 
-arquitetura desacoplada
+During the development of this project, several important concepts were applied, such as:
 
-integração entre serviços
+REST API development
 
-manipulação de banco de dados
+JWT authentication
 
-automação com n8n
+Decoupled architecture
 
-deploy em nuvem
+Service integration
 
-🚀 Possíveis melhorias futuras
+Database manipulation
 
-sistema de permissões de usuário
+Automation with n8n
 
-exportação de relatórios
+Cloud deployment
 
-dashboard avançado
+---
 
-integração com APIs externas
+# 🚀 Possible Future Improvements
 
-👨‍💻 Autor
+User permission system
+
+Report export
+
+Advanced dashboard
+
+Integration with external APIs
+
+---
+
+# 👨‍💻 Author
 
 Valdinei Santos Soares
 
