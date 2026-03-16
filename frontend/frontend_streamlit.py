@@ -9,10 +9,10 @@ import sys
 import os
 
 
-# Garante que o diretório pai esteja no path (para imports de módulos)
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-# Caminho base do script (para CSS e imagens)
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 API_URL = "https://estoque-backend-pyq6.onrender.com/"
@@ -34,12 +34,14 @@ def carregar_css():
 carregar_css()
 
 # HEADER
+# HEADER
 if "menu" not in st.session_state or st.session_state.get("menu") != "VsBot":
 
     col_logo, col_title = st.columns([1,5])
 
     with col_logo:
         img_path = os.path.join(BASE_DIR, "imagens", "vsoares.png")
+        st.image(img_path, width=800)
 
     with col_title:
         st.title("Sistema de Controle de Estoque")
