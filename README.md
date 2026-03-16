@@ -14,7 +14,7 @@
 
 ### 📦 Gerenciamento de produtos
 
-![Produtos](docs/gifs/tela_produtos)
+![Produtos](docs/gifs/tela_produtos.gif)
 
 ---
 
